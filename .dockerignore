@@ -1,0 +1,47 @@
+# Node modules
+node_modules
+index/node_modules
+npm-debug.log*
+
+# Build output
+index/dist
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Logs
+logs
+*.log
+server/data/*.db
+server/data/backups/*.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache

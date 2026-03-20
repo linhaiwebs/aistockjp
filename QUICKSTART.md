@@ -1,6 +1,32 @@
 # Quick Start Guide
 
-## 🚀 Get Started in 5 Minutes
+## ✅ Deployment Issues Fixed
+
+All Docker deployment errors have been resolved:
+- ✅ PHP mbstring extension compiles successfully (oniguruma library added)
+- ✅ No PHP extension warnings (removed core extensions from php.ini)
+- ✅ Node.js build works correctly (npm install --include=dev)
+- ✅ Proper container startup order (health check dependencies)
+- ✅ Optimized configuration with caching
+
+See `FIXES_APPLIED.md` for detailed technical information.
+
+## 🚀 Deploy in 3 Simple Commands
+
+### Quick Deployment
+```bash
+./start.sh
+```
+
+Or test configuration first:
+```bash
+./test-deployment.sh  # Validate fixes
+./start.sh            # Deploy
+```
+
+---
+
+## 🚀 Manual Setup (5 Minutes)
 
 ### Step 1: Configure Environment
 

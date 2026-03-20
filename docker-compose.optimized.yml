@@ -12,14 +12,18 @@ services:
       - ./:/var/www/html
       - nginx_logs:/var/log/nginx
     depends_on:
-      - php
-      - nodejs
+      php:
+        condition: service_healthy
+      nodejs:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - stock-ai-network
 
   php:
-    image: php:8.2-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile.php
     container_name: stock-ai-php
     volumes:
       - ./:/var/www/html
@@ -28,20 +32,6 @@ services:
     restart: unless-stopped
     networks:
       - stock-ai-network
-    command: >
-      sh -c "
-        apt-get update &&
-        apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev libonig-dev &&
-        docker-php-ext-install curl mbstring &&
-        echo '[www]' > /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'listen = 0.0.0.0:9000' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'pm = dynamic' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'pm.max_children = 5' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'pm.start_servers = 2' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'pm.min_spare_servers = 1' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        echo 'pm.max_spare_servers = 3' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
-        php-fpm
-      "
     healthcheck:
       test: ["CMD-SHELL", "php-fpm -t || exit 1"]
       interval: 30s
@@ -50,16 +40,13 @@ services:
       start_period: 40s
 
   nodejs:
-    image: node:20-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.nodejs
     container_name: stock-ai-nodejs
-    working_dir: /app
-    volumes:
-      - ./index:/app
-      - node_modules:/app/node_modules
     environment:
       - NODE_ENV=production
       - API_PORT=3001
-    command: sh -c "apk add --no-cache wget && npm install --include=dev && npm run build && npm run start:prod"
     restart: unless-stopped
     networks:
       - stock-ai-network
@@ -79,4 +66,3 @@ networks:
 
 volumes:
   nginx_logs:
-  node_modules:

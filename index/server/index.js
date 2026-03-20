@@ -138,13 +138,13 @@ if (NODE_ENV === 'production') {
   console.log(`📦 Serving static files from: ${distPath}`);
 }
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📊 Stock API: http://localhost:${PORT}/index/api/stock`);
-  console.log(`🤖 SiliconFlow API: http://localhost:${PORT}/index/api/gemini`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
+  console.log(`📊 Stock API: http://0.0.0.0:${PORT}/index/api/stock`);
+  console.log(`🤖 SiliconFlow API: http://0.0.0.0:${PORT}/index/api/gemini`);
   console.log(`🌍 Environment: ${NODE_ENV}`);
 
   if (NODE_ENV === 'production') {
-    console.log(`✨ Frontend available at: http://localhost:${PORT}/index`);
+    console.log(`✨ Frontend available at: http://0.0.0.0:${PORT}/index`);
   }
 });

@@ -7,9 +7,12 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libonig-dev \
     procps \
-    && docker-php-ext-install curl mbstring \
+    && docker-php-ext-install mbstring \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Create log directory for PHP
+RUN mkdir -p /var/log/php && chmod 777 /var/log/php
 
 # Copy custom PHP configuration
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
@@ -29,8 +32,8 @@ WORKDIR /var/www/html
 
 EXPOSE 9000
 
-# Health check
+# Health check - verify PHP-FPM is running
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD php-fpm -t || exit 1
+  CMD pgrep php-fpm || exit 1
 
 CMD ["php-fpm"]

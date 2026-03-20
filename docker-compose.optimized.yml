@@ -33,7 +33,7 @@ services:
     networks:
       - stock-ai-network
     healthcheck:
-      test: ["CMD-SHELL", "php-fpm -t || exit 1"]
+      test: ["CMD", "pgrep", "php-fpm"]
       interval: 30s
       timeout: 10s
       retries: 3

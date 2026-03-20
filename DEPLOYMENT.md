@@ -125,6 +125,47 @@ TRUST_PROXY=true
 
 ## 常见问题
 
+### 0. PHP 容器无法启动
+
+**原因**: PHP-FPM 配置错误或扩展安装失败
+
+**诊断步骤**:
+```bash
+# 运行 PHP 专用诊断脚本
+./diagnose-php.sh
+
+# 查看 PHP 容器日志
+docker-compose logs php
+
+# 测试 PHP-FPM 配置
+docker-compose exec php php-fpm -t
+
+# 检查 PHP 扩展
+docker-compose exec php php -m
+
+# 查看 PHP 错误日志
+docker-compose exec php cat /var/log/php/error.log
+```
+
+**解决方案**:
+```bash
+# 方案1: 重新构建 PHP 容器
+docker-compose down
+docker-compose build --no-cache php
+docker-compose up -d
+
+# 方案2: 检查 php.ini 配置
+# 确保所有路径和设置正确
+
+# 方案3: 验证 Dockerfile.php
+# 确保所有扩展正确安装
+```
+
+**常见错误及修复**:
+- `curl extension not found` - curl 是 PHP 核心功能，无需安装扩展
+- `log directory not found` - 已在 Dockerfile 中创建 /var/log/php
+- `php-fpm configuration test failed` - 检查 www.conf 配置文件
+
 ### 1. 502 Bad Gateway
 
 **原因**: Node.js 容器未就绪或未正常运行

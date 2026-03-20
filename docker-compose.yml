@@ -43,6 +43,12 @@ services:
       - NODE_ENV=production
       - API_PORT=3001
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/index/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
     networks:
       - stock-ai-network
     depends_on:

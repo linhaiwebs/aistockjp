@@ -22,7 +22,7 @@
     }
 
 
-    if ( ! extension_loaded('curl')) {
+    if ( ! function_exists('curl_init')) {
         exit('The cURL PHP extension is required.');
     }
 

@@ -32,11 +32,16 @@ services:
       sh -c "
         apt-get update &&
         apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev &&
-        docker-php-ext-install curl &&
-        pecl install openssl &&
-        docker-php-ext-enable openssl &&
+        docker-php-ext-install curl mbstring &&
+        echo 'listen = 0.0.0.0:9000' >> /usr/local/etc/php-fpm.d/zz-docker.conf &&
         php-fpm
       "
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   nodejs:
     image: node:20-alpine
@@ -47,7 +52,7 @@ services:
     environment:
       - NODE_ENV=production
       - API_PORT=3001
-    command: sh -c "apk add --no-cache wget && npm install && npm run start:prod"
+    command: sh -c "apk add --no-cache wget && npm install && npm run build && npm run start:prod"
     restart: unless-stopped
     networks:
       - stock-ai-network

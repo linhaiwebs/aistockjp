@@ -16,6 +16,10 @@ export const buildApiUrl = (endpoint: string): string => {
     endpoint = `/${endpoint}`;
   }
 
+  if (!endpoint.startsWith('/index/')) {
+    endpoint = `/index${endpoint}`;
+  }
+
   if (baseUrl === '') {
     return endpoint;
   }

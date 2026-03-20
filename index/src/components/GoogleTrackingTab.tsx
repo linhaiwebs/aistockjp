@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, CheckCircle, AlertCircle, BarChart3, Eye, EyeOff } from 'lucide-react';
+import { Save, CircleCheck as CheckCircle, CircleAlert as AlertCircle, ChartBar as BarChart3, Eye, EyeOff } from 'lucide-react';
 import { apiClient } from '../lib/apiClient';
 
 interface GoogleTrackingConfig {

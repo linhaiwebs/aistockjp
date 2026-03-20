@@ -1,19 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  BarChart3,
-  Users,
-  TrendingUp,
-  LogOut,
-  Clock,
-  Activity,
-  CheckCircle2,
-  XCircle,
-  Link2,
-  Settings,
-  FileDown,
-  Database
-} from 'lucide-react';
+import { ChartBar as BarChart3, Users, TrendingUp, LogOut, Clock, Activity, CircleCheck as CheckCircle2, Circle as XCircle, Link2, Settings, FileDown, Database } from 'lucide-react';
 import { adminAuth } from '../lib/adminAuth';
 import { apiClient } from '../lib/apiClient';
 import SessionsTab from '../components/SessionsTab';

@@ -1,15 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Globe,
-  MousePointerClick,
-  CheckCircle,
-  Clock,
-  Search,
-  Filter,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink
-} from 'lucide-react';
+import { Globe, MousePointerClick, CircleCheck as CheckCircle, Clock, Search, ListFilter as Filter, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { apiClient } from '../lib/apiClient';
 
 interface UserSession {

@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: stock-ai-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - php
+      - nodejs
+    restart: unless-stopped
+    networks:
+      - stock-ai-network
+
+  php:
+    image: php:8.2-fpm
+    container_name: stock-ai-php
+    volumes:
+      - ./:/var/www/html
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+    working_dir: /var/www/html
+    restart: unless-stopped
+    networks:
+      - stock-ai-network
+    command: >
+      sh -c "
+        apt-get update &&
+        apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev &&
+        docker-php-ext-install curl &&
+        pecl install openssl &&
+        docker-php-ext-enable openssl &&
+        php-fpm
+      "
+
+  nodejs:
+    image: node:20-alpine
+    container_name: stock-ai-nodejs
+    working_dir: /app
+    volumes:
+      - ./index:/app
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3001
+    command: sh -c "npm install && npm run start:prod"
+    restart: unless-stopped
+    networks:
+      - stock-ai-network
+    depends_on:
+      - php
+
+networks:
+  stock-ai-network:
+    driver: bridge
+
+volumes:
+  nginx_logs:

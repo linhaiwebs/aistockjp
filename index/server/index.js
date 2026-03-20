@@ -111,14 +111,14 @@ app.use(securityHeadersMiddleware);
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 
-app.use('/api/stock', stockRouter);
-app.use('/api/gemini', geminiRouter);
-app.use('/api/admin', adminRouter);
-app.use('/api/tracking', trackingRouter);
-app.use('/api/line-redirects', lineRedirectRouter);
-app.use('/api/google-tracking', googleTrackingRouter);
+app.use('/index/api/stock', stockRouter);
+app.use('/index/api/gemini', geminiRouter);
+app.use('/index/api/admin', adminRouter);
+app.use('/index/api/tracking', trackingRouter);
+app.use('/index/api/line-redirects', lineRedirectRouter);
+app.use('/index/api/google-tracking', googleTrackingRouter);
 
-app.get('/health', (req, res) => {
+app.get('/index/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -129,9 +129,9 @@ app.get('/health', (req, res) => {
 if (NODE_ENV === 'production') {
   const distPath = join(__dirname, '..', 'dist');
 
-  app.use(express.static(distPath));
+  app.use('/index', express.static(distPath));
 
-  app.get('*', (req, res) => {
+  app.get('/index/*', (req, res) => {
     res.sendFile(join(distPath, 'index.html'));
   });
 
@@ -140,11 +140,11 @@ if (NODE_ENV === 'production') {
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📊 Stock API: http://localhost:${PORT}/api/stock`);
-  console.log(`🤖 SiliconFlow API: http://localhost:${PORT}/api/gemini`);
+  console.log(`📊 Stock API: http://localhost:${PORT}/index/api/stock`);
+  console.log(`🤖 SiliconFlow API: http://localhost:${PORT}/index/api/gemini`);
   console.log(`🌍 Environment: ${NODE_ENV}`);
 
   if (NODE_ENV === 'production') {
-    console.log(`✨ Frontend available at: http://localhost:${PORT}`);
+    console.log(`✨ Frontend available at: http://localhost:${PORT}/index`);
   }
 });

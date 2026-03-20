@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, User, AlertCircle } from 'lucide-react';
+import { Lock, User, CircleAlert as AlertCircle } from 'lucide-react';
 import { adminAuth } from '../lib/adminAuth';
 
 export default function AdminLogin() {

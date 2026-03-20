@@ -1,4 +1,4 @@
-import { X, ExternalLink, Loader2 } from 'lucide-react';
+import { X, ExternalLink, Loader as Loader2 } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import AnalysisRenderer from './AnalysisRenderer';
 import AIAccuracyChart from './AIAccuracyChart';

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync } from 'fs';
 import stockRouter from './routes/stock.js';
 import geminiRouter from './routes/gemini.js';
 import adminRouter from './routes/admin.js';
@@ -13,10 +14,22 @@ import { cleanExpiredCache } from './utils/sqliteCache.js';
 import { createBackup } from './utils/databaseBackup.js';
 import './database/sqlite.js';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const envPath = join(__dirname, '..', '.env');
+const envProductionPath = join(__dirname, '..', '.env.production');
+
+if (existsSync(envPath)) {
+  console.log('Loading .env file');
+  dotenv.config({ path: envPath });
+} else if (existsSync(envProductionPath)) {
+  console.log('Loading .env.production file');
+  dotenv.config({ path: envProductionPath });
+} else {
+  console.log('No .env file found, using environment variables');
+  dotenv.config();
+}
 
 const PORT = process.env.API_PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';

@@ -3,13 +3,14 @@ node_modules
 index/node_modules
 npm-debug.log*
 
-# Build output
-index/dist
+# Build output (will be built in Docker)
+# index/dist - commented out to allow copying if pre-built
 
-# Environment files
+# Environment files (except .env.production needed for deployment)
 .env
 .env.local
 .env.*.local
+!index/.env.production
 
 # Git
 .git
@@ -38,10 +39,21 @@ docker-compose*.yml
 # Logs
 logs
 *.log
-server/data/*.db
-server/data/backups/*.db
+**/backups/*.db
+
+# Database files (will be created fresh)
+index/server/data/*.db
 
 # Temporary files
 *.tmp
 *.temp
 .cache
+
+# Home directory
+home/
+
+# Test files
+test-deployment.sh
+
+# Bolt config
+.bolt/

@@ -1,3 +1,20 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY index/package*.json ./
+
+# Install all dependencies including devDependencies
+RUN npm ci --include=dev
+
+# Copy application code
+COPY index/ ./
+
+# Build the application
+RUN npm run build
+
+# Production stage
 FROM node:20-alpine
 
 # Install wget for healthcheck
@@ -8,20 +25,25 @@ WORKDIR /app
 # Copy package files
 COPY index/package*.json ./
 
-# Install all dependencies including devDependencies
-RUN npm install --include=dev
+# Install only production dependencies
+RUN npm ci --omit=dev
 
-# Copy application code
-COPY index/ ./
+# Copy built application from builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server ./server
 
-# Build the application
-RUN npm run build
+# Copy environment file
+COPY index/.env.production ./.env
 
 # Set environment
 ENV NODE_ENV=production
 ENV API_PORT=3001
 
 EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:3001/index/health || exit 1
 
 # Start the application
 CMD ["npm", "run", "start:prod"]

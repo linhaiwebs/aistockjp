@@ -7,7 +7,7 @@ export default defineConfig({
   base: '/',
   plugins: [react()],
   resolve: {
-    dedupe: ['react', 'react-dom', 'react-router-dom'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', 'scheduler'],
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
@@ -19,9 +19,6 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
             if (id.includes('recharts') || id.includes('d3-')) {
               return 'vendor-charts';
             }
@@ -31,7 +28,6 @@ export default defineConfig({
             if (id.includes('docx') || id.includes('file-saver')) {
               return 'vendor-utils';
             }
-            return 'vendor-other';
           }
           if (id.includes('src/pages/AdminDashboard')) {
             return 'admin';
@@ -45,7 +41,7 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 1000,
     sourcemap: false,
   },
   define: {

@@ -5,15 +5,25 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: '/index/',
   plugins: [react()],
+  resolve: {
+    dedupe: ['react', 'react-dom', 'react-router-dom'],
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['react', 'react-dom', 'react-router-dom'],
   },
   build: {
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            if (id.includes('react-dom')) {
+              return 'vendor-react-dom';
+            }
+            if (id.includes('react-router-dom') || id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-router')) {
               return 'vendor-react';
             }
             if (id.includes('recharts') || id.includes('d3-')) {

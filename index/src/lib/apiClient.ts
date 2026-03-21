@@ -16,14 +16,11 @@ export const buildApiUrl = (endpoint: string): string => {
     endpoint = `/${endpoint}`;
   }
 
-  // Always use /index/api/* paths for API calls
-  // This ensures API works in both direct (/index/) and loading (/) modes
   if (!endpoint.startsWith('/index/')) {
     endpoint = `/index${endpoint}`;
   }
 
   if (baseUrl === '') {
-    // Return absolute path for API endpoints
     return endpoint;
   }
 

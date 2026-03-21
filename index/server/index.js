@@ -101,6 +101,10 @@ function securityHeadersMiddleware(req, res, next) {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   }
 
+  const productionDomains = NODE_ENV === 'production'
+    ? " http://iswstock.com https://iswstock.com http://ostosk.jp https://ostosk.jp"
+    : "";
+
   const cspDirectives = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://static.cloudflareinsights.com" + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
@@ -108,7 +112,7 @@ function securityHeadersMiddleware(req, res, next) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com" + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
     "img-src 'self' data: https: https://www.google.com https://www.google.co.jp https://www.google-analytics.com https://ssl.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com" + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://www.google.com https://www.google.co.jp https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://googleadservices.com https://api.siliconflow.cn https://kabutan.jp https://cloudflareinsights.com" + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
+    "connect-src 'self' https://www.google.com https://www.google.co.jp https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://googleadservices.com https://api.siliconflow.cn https://kabutan.jp https://cloudflareinsights.com" + productionDomains + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
     "frame-src https://bid.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com" + (NODE_ENV === 'development' ? " https://tagassistant.google.com" : ""),
     "frame-ancestors 'none'",
     "base-uri 'self'",

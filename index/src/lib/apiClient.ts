@@ -55,6 +55,8 @@ const buildHeaders = (additionalHeaders?: HeadersInit): HeadersInit => {
 };
 
 export const apiClient = {
+  buildApiUrl,
+
   async get(endpoint: string, options?: RequestInit) {
     const url = buildApiUrl(endpoint);
     const response = await fetch(url, {

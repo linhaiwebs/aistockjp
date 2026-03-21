@@ -188,30 +188,23 @@ export default function RefactoredHome() {
     }, 100);
 
     try {
-      const apiUrl = `${import.meta.env.VITE_API_URL || ''}/api/gemini/diagnosis`;
-
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 50000);
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: stockCode,
-          stockData: stockData ? {
-            name: stockData.info.name,
-            price: stockData.info.price,
-            change: stockData.info.change,
-            changePercent: stockData.info.changePercent,
-            per: stockData.info.per,
-            pbr: stockData.info.pbr,
-            dividend: stockData.info.dividend,
-            industry: stockData.info.industry,
-            marketCap: stockData.info.marketCap,
-          } : null,
-        }),
+      const response = await apiClient.post('/api/gemini/diagnosis', {
+        code: stockCode,
+        stockData: stockData ? {
+          name: stockData.info.name,
+          price: stockData.info.price,
+          change: stockData.info.change,
+          changePercent: stockData.info.changePercent,
+          per: stockData.info.per,
+          pbr: stockData.info.pbr,
+          dividend: stockData.info.dividend,
+          industry: stockData.info.industry,
+          marketCap: stockData.info.marketCap,
+        } : null,
+      }, {
         signal: controller.signal,
       });
 

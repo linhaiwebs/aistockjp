@@ -22,7 +22,8 @@ export async function initializeGoogleTracking(): Promise<void> {
   }
 
   try {
-    const response = await fetch('/api/google-tracking');
+    const { apiClient } = await import('./apiClient');
+    const response = await apiClient.get('/api/google-tracking');
     const data = await response.json();
 
     if (!data.success || !data.config || !data.config.is_enabled) {
